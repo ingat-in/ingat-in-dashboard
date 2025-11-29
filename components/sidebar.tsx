@@ -7,6 +7,17 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useAuth } from "@/components/auth-provider";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -150,14 +161,39 @@ export function Sidebar() {
             )}
 
             {/* Logout Button */}
-            <Button
-              onClick={handleSignOut}
-              variant="outline"
-              className="w-full justify-start gap-3 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200 hover:border-red-300 font-semibold"
-            >
-              <LogOut className="h-4 w-4" />
-              Sign Out
-            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start gap-3 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200 hover:border-red-300 font-semibold"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent className="bg-white/95 backdrop-blur-xl border-zinc-200 shadow-2xl">
+                <AlertDialogHeader>
+                  <AlertDialogTitle className="text-xl font-bold text-zinc-900">
+                    Logout Confirmation
+                  </AlertDialogTitle>
+                  <AlertDialogDescription className="text-zinc-600">
+                    Are you sure you want to logout? You will need to login again to access the
+                    dashboard.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel className="font-semibold hover:bg-zinc-50 border-zinc-200">
+                    Cancel
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={handleSignOut}
+                    className="bg-red-600 hover:bg-red-700 text-white font-semibold shadow-lg shadow-red-500/30 hover:shadow-xl hover:shadow-red-500/40"
+                  >
+                    Logout
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </motion.div>
         </div>
       </aside>

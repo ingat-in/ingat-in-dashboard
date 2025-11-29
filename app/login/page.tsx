@@ -176,11 +176,11 @@ export default function LoginPage() {
                     {loading ? (
                       <>
                         <RefreshCw className="mr-2 h-5 w-5 animate-spin" />
-                        Signing in...
+                        Logging in...
                       </>
                     ) : (
                       <>
-                        Sign in
+                        Login
                         <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                       </>
                     )}

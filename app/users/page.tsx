@@ -1,13 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { RefreshCw, Users, CheckCircle, XCircle, Search } from "lucide-react";
+import { RefreshCw, Users, CheckCircle, XCircle, Search, Edit, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { useRealtimeUsers } from "@/hooks/useRealtimeUsers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -16,10 +18,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { supabase } from "@/lib/supabase";
+import { User } from "@/lib/types";
 
 export default function UsersPage() {
   const { users, loading } = useRealtimeUsers();
   const [searchQuery, setSearchQuery] = useState("");
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<User | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const router = useRouter();
 
   const formatPhoneNumber = (number: string) => {
     return number.replace("@s.whatsapp.net", "");
@@ -28,6 +46,37 @@ export default function UsersPage() {
   const filteredUsers = users.filter((user) =>
     formatPhoneNumber(user.number).toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleDeleteClick = (user: User) => {
+    setUserToDelete(user);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!userToDelete?.id) return;
+
+    setIsDeleting(true);
+    try {
+      const { error } = await supabase
+        .from("users")
+        .delete()
+        .eq("id", userToDelete.id);
+
+      if (error) throw error;
+
+      setDeleteDialogOpen(false);
+      setUserToDelete(null);
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      alert("Failed to delete user. Please try again.");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleEditClick = (user: User) => {
+    router.push(`/users/${user.id}/edit`);
+  };
 
   const pageTransition = {
     hidden: { opacity: 0 },
@@ -154,6 +203,9 @@ export default function UsersPage() {
                     <TableHead className="font-bold text-zinc-700 text-xs uppercase tracking-wider py-4 min-w-[180px]">
                       Last Activity
                     </TableHead>
+                    <TableHead className="font-bold text-zinc-700 text-xs uppercase tracking-wider py-4 text-center min-w-[120px]">
+                      Actions
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -249,6 +301,26 @@ export default function UsersPage() {
                           <span className="text-zinc-400 italic">No activity</span>
                         )}
                       </TableCell>
+                      <TableCell className="py-5">
+                        <div className="flex justify-center gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleEditClick(user)}
+                            className="hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 transition-all"
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleDeleteClick(user)}
+                            className="hover:bg-red-50 hover:text-red-700 hover:border-red-300 transition-all"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
                     </motion.tr>
                   ))}
                 </TableBody>
@@ -274,6 +346,46 @@ export default function UsersPage() {
           )}
         </CardContent>
       </Card>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent className="bg-white/95 backdrop-blur-xl border-zinc-200 shadow-2xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-xl font-bold text-zinc-900">
+              Delete User Confirmation
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-zinc-600">
+              Are you sure you want to delete user{" "}
+              <span className="font-mono font-semibold text-zinc-900">
+                {userToDelete ? formatPhoneNumber(userToDelete.number) : ""}
+              </span>
+              ? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel 
+              disabled={isDeleting}
+              className="font-semibold hover:bg-zinc-50 border-zinc-200"
+            >
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteConfirm}
+              disabled={isDeleting}
+              className="bg-red-600 hover:bg-red-700 text-white font-semibold shadow-lg shadow-red-500/30 hover:shadow-xl hover:shadow-red-500/40"
+            >
+              {isDeleting ? (
+                <>
+                  <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                "Delete"
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </motion.div>
   );
 }

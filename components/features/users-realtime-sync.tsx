@@ -3,13 +3,19 @@
 import { useEffect } from "react";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "@/components/providers/auth-provider";
 import { supabase } from "@/lib/supabase";
 import { IUser } from "@/interfaces/users";
 
 export function UsersRealtimeSync() {
   const queryClient = useQueryClient();
+  const { user } = useAuth();
 
   useEffect(() => {
+    if (!user) {
+      return;
+    }
+
     let channel: RealtimeChannel | null = null;
 
     async function setupRealtime() {
@@ -88,7 +94,7 @@ export function UsersRealtimeSync() {
         supabase.removeChannel(channel);
       }
     };
-  }, [queryClient]);
+  }, [queryClient, user]);
 
   return null;
 }

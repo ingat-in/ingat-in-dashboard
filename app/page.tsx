@@ -1,15 +1,17 @@
 "use client";
 
 import { useMemo } from "react";
-import { motion, Variants, TargetAndTransition } from "framer-motion";
-import { RefreshCw, Users, CheckCircle, AlertTriangle, Activity } from "lucide-react";
+import { motion, Variants } from "framer-motion";
+import { Users, CheckCircle, AlertTriangle, Activity } from "lucide-react";
 
 import { useUsers } from "@/services/users/query";
-import { RealtimeIndicator } from "@/components/realtime-indicator";
+import { RealtimeIndicator } from "@/components/atoms/realtimeIndicator";
+import { PageHeader } from "@/components/atoms/pageHeader";
+import { LoadingState } from "@/components/atoms/loadingState";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { IStats } from "@/interfaces/stats";
+import { StatCard } from "@/components/molecules/statCard";
 
 export default function Home() {
   const { data: users = [], isLoading: loading, error } = useUsers();
@@ -77,11 +79,6 @@ export default function Home() {
     },
   };
 
-  const cardHover: TargetAndTransition = {
-    y: -8,
-    transition: { type: "spring", stiffness: 300, damping: 20 },
-  };
-
   const formatPhoneNumber = (number: string) => {
     return number.replace("@s.whatsapp.net", "");
   };
@@ -89,19 +86,11 @@ export default function Home() {
   return (
     <motion.div variants={pageTransition} initial="hidden" animate="show" className="space-y-8">
       {/* Header */}
-      <div className="flex flex-col gap-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-4xl font-bold tracking-tight bg-linear-to-br from-zinc-900 via-zinc-800 to-zinc-700 bg-clip-text text-transparent mb-2">
-              Dashboard Overview
-            </h1>
-            <p className="text-lg text-zinc-600">
-              Real-time monitoring of WhatsApp Bot attendance system
-            </p>
-          </div>
-          <RealtimeIndicator />
-        </div>
-      </div>
+      <PageHeader
+        title="Dashboard Overview"
+        description="Real-time monitoring of WhatsApp Bot attendance system"
+        action={<RealtimeIndicator />}
+      />
 
       {error && (
         <motion.div
@@ -124,130 +113,32 @@ export default function Home() {
       <motion.div variants={container} initial="hidden" animate="show" className="space-y-8">
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <motion.div variants={item} whileHover={cardHover} className="h-full">
-            <Card className="relative overflow-hidden border-blue-100/50 bg-linear-to-br from-white via-blue-50/30 to-white backdrop-blur-xl shadow-lg hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 group h-full">
-              <div className="absolute inset-0 bg-linear-to-br from-blue-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-blue-400/10 blur-2xl group-hover:bg-blue-400/20 transition-colors duration-500" />
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
-                <CardTitle className="text-sm font-semibold text-zinc-600 uppercase tracking-wide">
-                  Total Users
-                </CardTitle>
-                <motion.div
-                  whileHover={{ rotate: 360, scale: 1.1 }}
-                  transition={{ duration: 0.6 }}
-                  className="p-3 bg-linear-to-br from-blue-500 to-blue-600 rounded-2xl text-white shadow-lg shadow-blue-500/30"
-                >
-                  <Users className="h-5 w-5" />
-                </motion.div>
-              </CardHeader>
-              <CardContent className="pt-2 relative z-10">
-                <div className="text-5xl font-bold bg-linear-to-br from-zinc-900 to-zinc-700 bg-clip-text text-transparent mb-3">
-                  {loading ? (
-                    <div className="h-12 w-24 bg-linear-to-r from-zinc-200 to-zinc-300 animate-pulse rounded-lg" />
-                  ) : (
-                    <motion.span
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {stats.totalUsers}
-                    </motion.span>
-                  )}
-                </div>
-                <p className="text-sm text-zinc-500 flex items-center gap-1.5 font-medium">
-                  <span className="text-blue-600 font-semibold">↗ +2.5%</span> from last week
-                </p>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div variants={item} whileHover={cardHover} className="h-full">
-            <Card className="relative overflow-hidden border-emerald-100/50 bg-linear-to-br from-white via-emerald-50/30 to-white backdrop-blur-xl shadow-lg hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-500 group h-full">
-              <div className="absolute inset-0 bg-linear-to-br from-emerald-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-emerald-400/10 blur-2xl group-hover:bg-emerald-400/20 transition-colors duration-500" />
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
-                <CardTitle className="text-sm font-semibold text-zinc-600 uppercase tracking-wide">
-                  Absen Pagi
-                </CardTitle>
-                <motion.div
-                  whileHover={{ rotate: 360, scale: 1.1 }}
-                  transition={{ duration: 0.6 }}
-                  className="p-3 bg-linear-to-br from-emerald-500 to-emerald-600 rounded-2xl text-white shadow-lg shadow-emerald-500/30"
-                >
-                  <CheckCircle className="h-5 w-5" />
-                </motion.div>
-              </CardHeader>
-              <CardContent className="pt-2 relative z-10">
-                <div className="text-5xl font-bold bg-linear-to-br from-zinc-900 to-zinc-700 bg-clip-text text-transparent mb-3">
-                  {loading ? (
-                    <div className="h-12 w-32 bg-linear-to-r from-zinc-200 to-zinc-300 animate-pulse rounded-lg" />
-                  ) : (
-                    <motion.span
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {stats.absenPagi.sudah}/{stats.totalUsers}
-                    </motion.span>
-                  )}
-                </div>
-                <Progress
-                  value={stats.absenPagi.percentage}
-                  className="h-2 bg-emerald-100/60 [&>div]:bg-linear-to-r [&>div]:from-emerald-500 [&>div]:to-emerald-600 rounded-full mb-3"
-                />
-                <p className="text-sm text-zinc-500 font-medium">
-                  <span className="text-emerald-600 font-semibold">
-                    {stats.absenPagi.percentage}%
-                  </span>{" "}
-                  Completion rate
-                </p>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div variants={item} whileHover={cardHover} className="h-full">
-            <Card className="relative overflow-hidden border-violet-100/50 bg-linear-to-br from-white via-violet-50/30 to-white backdrop-blur-xl shadow-lg hover:shadow-2xl hover:shadow-violet-500/10 transition-all duration-500 group h-full">
-              <div className="absolute inset-0 bg-linear-to-br from-violet-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-violet-400/10 blur-2xl group-hover:bg-violet-400/20 transition-colors duration-500" />
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
-                <CardTitle className="text-sm font-semibold text-zinc-600 uppercase tracking-wide">
-                  Absen Sore
-                </CardTitle>
-                <motion.div
-                  whileHover={{ rotate: 360, scale: 1.1 }}
-                  transition={{ duration: 0.6 }}
-                  className="p-3 bg-linear-to-br from-violet-500 to-violet-600 rounded-2xl text-white shadow-lg shadow-violet-500/30"
-                >
-                  <CheckCircle className="h-5 w-5" />
-                </motion.div>
-              </CardHeader>
-              <CardContent className="pt-2 relative z-10">
-                <div className="text-5xl font-bold bg-linear-to-br from-zinc-900 to-zinc-700 bg-clip-text text-transparent mb-3">
-                  {loading ? (
-                    <div className="h-12 w-32 bg-linear-to-r from-zinc-200 to-zinc-300 animate-pulse rounded-lg" />
-                  ) : (
-                    <motion.span
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5 }}
-                    >
-                      {stats.absenSore.sudah}/{stats.totalUsers}
-                    </motion.span>
-                  )}
-                </div>
-                <Progress
-                  value={stats.absenSore.percentage}
-                  className="h-2 bg-violet-100/60 [&>div]:bg-linear-to-r [&>div]:from-violet-500 [&>div]:to-violet-600 rounded-full mb-3"
-                />
-                <p className="text-sm text-zinc-500 font-medium">
-                  <span className="text-violet-600 font-semibold">
-                    {stats.absenSore.percentage}%
-                  </span>{" "}
-                  Completion rate
-                </p>
-              </CardContent>
-            </Card>
-          </motion.div>
+          <StatCard
+            title="Total Users"
+            value={stats.totalUsers}
+            icon={Users}
+            gradient="blue"
+            footer="↗ +2.5% from last week"
+            loading={loading}
+          />
+          <StatCard
+            title="Absen Pagi"
+            value={`${stats.absenPagi.sudah}/${stats.totalUsers}`}
+            icon={CheckCircle}
+            gradient="emerald"
+            progress={stats.absenPagi.percentage}
+            footer={`${stats.absenPagi.percentage}% Completion rate`}
+            loading={loading}
+          />
+          <StatCard
+            title="Absen Sore"
+            value={`${stats.absenSore.sudah}/${stats.totalUsers}`}
+            icon={CheckCircle}
+            gradient="violet"
+            progress={stats.absenSore.percentage}
+            footer={`${stats.absenSore.percentage}% Completion rate`}
+            loading={loading}
+          />
         </div>
 
         {/* Recent Activity */}
@@ -262,10 +153,7 @@ export default function Home() {
             </CardHeader>
             <CardContent className="p-6">
               {loading ? (
-                <div className="flex flex-col items-center justify-center py-12 gap-4">
-                  <RefreshCw className="h-10 w-10 animate-spin text-blue-500" />
-                  <p className="text-sm text-zinc-500 font-medium">Loading activity...</p>
-                </div>
+                <LoadingState message="Loading activity..." />
               ) : users.length > 0 ? (
                 <div className="space-y-4">
                   {users

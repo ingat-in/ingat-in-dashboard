@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "@/components/providers";
-import { LayoutContent } from "@/components/layout-content";
+import { LayoutContent } from "@/components/features/layout-content";
 
 export const metadata: Metadata = {
   title: "Ingat-In Dashboard",

@@ -20,24 +20,33 @@ const AuthContext = createContext<AuthContextType>({
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [initialCheckDone, setInitialCheckDone] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
     // Check initial session
-    supabase.auth
-      .getSession()
-      .then(({ data: { session } }: { data: { session: Session | null } }) => {
+    const checkSession = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
         setUser(session?.user ?? null);
+        setInitialCheckDone(true);
         setLoading(false);
 
         // Redirect logic after checking session
         if (!session && pathname !== "/login") {
-          router.push("/login");
+          router.replace("/login");
         } else if (session && pathname === "/login") {
-          router.push("/");
+          router.replace("/");
         }
-      });
+      } catch (error) {
+        console.error("Error checking session:", error);
+        setInitialCheckDone(true);
+        setLoading(false);
+      }
+    };
+
+    checkSession();
 
     // Listen for auth changes
     const {
@@ -45,16 +54,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } = supabase.auth.onAuthStateChange((_event: AuthChangeEvent, session: Session | null) => {
       setUser(session?.user ?? null);
 
-      // Redirect on auth change
-      if (!session && pathname !== "/login") {
-        router.push("/login");
-      } else if (session && pathname === "/login") {
-        router.push("/");
+      // Only redirect after initial check is done
+      if (initialCheckDone) {
+        if (!session && pathname !== "/login") {
+          router.replace("/login");
+        } else if (session && pathname === "/login") {
+          router.replace("/");
+        }
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [router, pathname]);
+  }, [router, pathname, initialCheckDone]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();

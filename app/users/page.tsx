@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 
 import { useUsers } from "@/services/users/query";
 import { useDeleteUser } from "@/services/users/mutation";
+import { PageHeader } from "@/components/atoms/pageHeader";
+import { LoadingState } from "@/components/atoms/loadingState";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -31,6 +33,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { IUser } from "@/interfaces/users";
+import { StatCard } from "@/components/molecules/statCard";
 
 export default function UsersPage() {
   const { data: users = [], isLoading: loading } = useUsers();
@@ -85,64 +88,26 @@ export default function UsersPage() {
   return (
     <motion.div variants={pageTransition} initial="hidden" animate="show" className="space-y-8">
       {/* Header */}
-      <div className="flex flex-col gap-6">
-        <div>
-          <h1 className="text-4xl font-bold tracking-tight bg-linear-to-br from-zinc-900 via-zinc-800 to-zinc-700 bg-clip-text text-transparent mb-2">
-            Users Management
-          </h1>
-          <p className="text-lg text-zinc-600">
-            View and manage all registered users in the system
-          </p>
-        </div>
+      <PageHeader
+        title="Users Management"
+        description="View and manage all registered users in the system"
+      />
 
-        {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card className="border-blue-100/50 bg-linear-to-br from-white via-blue-50/30 to-white">
-            <CardContent className="flex items-center justify-between p-6">
-              <div>
-                <p className="text-sm font-semibold text-zinc-600 uppercase tracking-wide mb-1">
-                  Total Users
-                </p>
-                <p className="text-3xl font-bold text-zinc-900">{users.length}</p>
-              </div>
-              <div className="p-3 bg-linear-to-br from-blue-500 to-blue-600 rounded-xl text-white shadow-lg">
-                <Users className="h-6 w-6" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-emerald-100/50 bg-linear-to-br from-white via-emerald-50/30 to-white">
-            <CardContent className="flex items-center justify-between p-6">
-              <div>
-                <p className="text-sm font-semibold text-zinc-600 uppercase tracking-wide mb-1">
-                  Morning Check-ins
-                </p>
-                <p className="text-3xl font-bold text-zinc-900">
-                  {users.filter((u) => u.absen_pagi).length}
-                </p>
-              </div>
-              <div className="p-3 bg-linear-to-br from-emerald-500 to-emerald-600 rounded-xl text-white shadow-lg">
-                <CheckCircle className="h-6 w-6" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-violet-100/50 bg-linear-to-br from-white via-violet-50/30 to-white">
-            <CardContent className="flex items-center justify-between p-6">
-              <div>
-                <p className="text-sm font-semibold text-zinc-600 uppercase tracking-wide mb-1">
-                  Evening Check-ins
-                </p>
-                <p className="text-3xl font-bold text-zinc-900">
-                  {users.filter((u) => u.absen_sore).length}
-                </p>
-              </div>
-              <div className="p-3 bg-linear-to-br from-violet-500 to-violet-600 rounded-xl text-white shadow-lg">
-                <CheckCircle className="h-6 w-6" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+      {/* Stats Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <StatCard title="Total Users" value={users.length} icon={Users} gradient="blue" />
+        <StatCard
+          title="Morning Check-ins"
+          value={users.filter((u) => u.absen_pagi).length}
+          icon={CheckCircle}
+          gradient="emerald"
+        />
+        <StatCard
+          title="Evening Check-ins"
+          value={users.filter((u) => u.absen_sore).length}
+          icon={CheckCircle}
+          gradient="violet"
+        />
       </div>
 
       {/* Users Table */}
@@ -179,10 +144,7 @@ export default function UsersPage() {
         </CardHeader>
         <CardContent className="p-0">
           {loading ? (
-            <div className="flex flex-col items-center justify-center py-16 gap-4">
-              <RefreshCw className="h-10 w-10 animate-spin text-blue-500" />
-              <p className="text-sm text-zinc-500 font-medium">Loading user data...</p>
-            </div>
+            <LoadingState message="Loading user data..." size="lg" />
           ) : filteredUsers.length > 0 ? (
             <div className="overflow-x-auto">
               <Table>

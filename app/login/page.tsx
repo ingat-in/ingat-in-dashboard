@@ -117,7 +117,7 @@ export default function LoginPage() {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="name@example.com"
+                    placeholder="Enter your email"
                     className="pl-12 h-12 border-zinc-300 focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200 rounded-xl text-base font-medium bg-white/50 backdrop-blur-sm"
                     required
                     value={email}

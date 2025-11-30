@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { UserPlus, Save } from "lucide-react";
+import { toast } from "sonner";
 
 import { useCreateUser } from "@/services/users/mutation";
 import { FormContainer } from "@/components/organisms/formContainer";
@@ -24,7 +25,7 @@ export default function CreateUserPage() {
     e.preventDefault();
 
     if (!formData.number) {
-      alert("Please enter a phone number");
+      toast.error("Please enter a phone number");
       return;
     }
 
@@ -48,11 +49,11 @@ export default function CreateUserPage() {
         absen_sore: formData.absen_sore,
       });
 
-      alert("User created successfully!");
+      toast.success("User created successfully!");
       router.push("/users");
     } catch (error) {
       console.error("Error creating user:", error);
-      alert("Failed to create user. Please try again.");
+      toast.error("Failed to create user. Please try again.");
     }
   };
 

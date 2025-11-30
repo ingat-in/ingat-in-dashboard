@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { RefreshCw, Users, CheckCircle, XCircle, Search, Edit, Trash2, Plus } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import { useUsers } from "@/services/users/query";
 import { useDeleteUser } from "@/services/users/mutation";
@@ -62,11 +63,12 @@ export default function UsersPage() {
 
     try {
       await deleteUserMutation.mutateAsync(userToDelete.id);
+      toast.success("User deleted successfully!");
       setDeleteDialogOpen(false);
       setUserToDelete(null);
     } catch (error) {
       console.error("Error deleting user:", error);
-      alert("Failed to delete user. Please try again.");
+      toast.error("Failed to delete user. Please try again.");
     }
   };
 

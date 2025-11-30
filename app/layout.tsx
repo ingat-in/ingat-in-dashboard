@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { LayoutContent } from "@/components/features/layout-content";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Ingat-In Dashboard",
@@ -19,6 +20,7 @@ export default function RootLayout({
         <Providers>
           <LayoutContent>{children}</LayoutContent>
         </Providers>
+        <Toaster />
       </body>
     </html>
   );

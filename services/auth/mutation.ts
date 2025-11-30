@@ -3,6 +3,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { signIn, signOut } from "./api";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 // Sign in mutation
 export function useSignIn() {
@@ -15,6 +16,7 @@ export function useSignIn() {
     onSuccess: () => {
       // Invalidate auth queries
       queryClient.invalidateQueries({ queryKey: ["auth"] });
+      toast.success("Login successful! Welcome back.");
       router.push("/");
     },
   });
@@ -32,6 +34,7 @@ export function useSignOut() {
       queryClient.removeQueries({ queryKey: ["auth"] });
       // Clear users queries
       queryClient.removeQueries({ queryKey: ["users"] });
+      toast.success("Logged out successfully.");
       router.push("/login");
     },
   });

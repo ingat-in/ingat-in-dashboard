@@ -3,6 +3,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Save, UserCog } from "lucide-react";
+import { toast } from "sonner";
 
 import { useUser } from "@/services/users/query";
 import { useUpdateUser } from "@/services/users/mutation";
@@ -58,11 +59,11 @@ export default function EditUserPage() {
         },
       });
 
-      alert("User updated successfully!");
+      toast.success("User updated successfully!");
       router.push("/users");
     } catch (error) {
       console.error("Error updating user:", error);
-      alert("Failed to update user. Please try again.");
+      toast.error("Failed to update user. Please try again.");
     }
   };
 

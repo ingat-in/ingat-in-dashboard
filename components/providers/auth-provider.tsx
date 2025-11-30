@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import type { User, Session, AuthChangeEvent } from "@supabase/supabase-js";
+import { logger } from "@/utils/logger";
 
 interface AuthContextType {
   user: User | null;
@@ -40,7 +41,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           router.replace("/");
         }
       } catch (error) {
-        console.error("Error checking session:", error);
+        logger.error("Error checking session:", error);
         setInitialCheckDone(true);
         setLoading(false);
       }

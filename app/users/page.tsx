@@ -5,6 +5,7 @@ import { RefreshCw, Users, CheckCircle, XCircle, Search, Edit, Trash2, Plus } fr
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { logger } from "@/utils/logger";
 
 import { useUsers } from "@/services/users/query";
 import { useDeleteUser } from "@/services/users/mutation";
@@ -67,7 +68,7 @@ export default function UsersPage() {
       setDeleteDialogOpen(false);
       setUserToDelete(null);
     } catch (error) {
-      console.error("Error deleting user:", error);
+      logger.error("Error deleting user:", error);
       toast.error("Failed to delete user. Please try again.");
     }
   };

@@ -4,6 +4,7 @@ import { useEffect, useState, useMemo } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Save, UserCog } from "lucide-react";
 import { toast } from "sonner";
+import { logger } from "@/utils/logger";
 
 import { useUser } from "@/services/users/query";
 import { useUpdateUser } from "@/services/users/mutation";
@@ -62,7 +63,7 @@ export default function EditUserPage() {
       toast.success("User updated successfully!");
       router.push("/users");
     } catch (error) {
-      console.error("Error updating user:", error);
+      logger.error("Error updating user:", error);
       toast.error("Failed to update user. Please try again.");
     }
   };

@@ -6,6 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/components/providers/auth-provider";
 import { supabase } from "@/lib/supabase";
 import { IUser } from "@/interfaces/users";
+import { logger } from "@/utils/logger";
 
 export function UsersRealtimeSync() {
   const queryClient = useQueryClient();
@@ -19,7 +20,7 @@ export function UsersRealtimeSync() {
     let channel: RealtimeChannel | null = null;
 
     async function setupRealtime() {
-      console.log("🔌 Setting up Realtime subscription with React Query...");
+      logger.log("🔌 Setting up Realtime subscription with React Query...");
 
       // Subscribe to realtime changes
       channel = supabase
@@ -32,7 +33,7 @@ export function UsersRealtimeSync() {
             table: "users",
           },
           (payload) => {
-            console.log("🔔 Realtime event received:", payload.eventType);
+            logger.log("🔔 Realtime event received:", payload.eventType);
 
             // Update React Query cache based on event type
             switch (payload.eventType) {
@@ -82,7 +83,7 @@ export function UsersRealtimeSync() {
           }
         )
         .subscribe((status) => {
-          console.log("📡 Realtime subscription status:", status);
+          logger.log("📡 Realtime subscription status:", status);
         });
     }
 
@@ -90,7 +91,7 @@ export function UsersRealtimeSync() {
 
     return () => {
       if (channel) {
-        console.log("🔌 Unsubscribing from realtime channel");
+        logger.log("🔌 Unsubscribing from realtime channel");
         supabase.removeChannel(channel);
       }
     };

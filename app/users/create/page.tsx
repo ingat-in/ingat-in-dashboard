@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { UserPlus, Save } from "lucide-react";
 import { toast } from "sonner";
+import { logger } from "@/utils/logger";
 
 import { useCreateUser } from "@/services/users/mutation";
 import { FormContainer } from "@/components/organisms/formContainer";
@@ -52,7 +53,7 @@ export default function CreateUserPage() {
       toast.success("User created successfully!");
       router.push("/users");
     } catch (error) {
-      console.error("Error creating user:", error);
+      logger.error("Error creating user:", error);
       toast.error("Failed to create user. Please try again.");
     }
   };

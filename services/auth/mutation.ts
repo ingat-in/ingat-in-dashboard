@@ -37,5 +37,19 @@ export function useSignOut() {
       toast.success("Logged out successfully.");
       router.push("/login");
     },
+    onError: (error) => {
+      // Force logout on error (e.g. session not found)
+      queryClient.removeQueries({ queryKey: ["auth"] });
+      queryClient.removeQueries({ queryKey: ["users"] });
+
+      // Check if it's a session error
+      if (error.message.includes("session") || error.message.includes("JWT")) {
+        toast.error("Session expired. Please login again.");
+      } else {
+        toast.error("Error logging out, but you have been signed out locally.");
+      }
+
+      router.push("/login");
+    },
   });
 }

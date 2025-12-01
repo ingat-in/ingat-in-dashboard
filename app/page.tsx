@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { motion, Variants } from "framer-motion";
 import { Users, CheckCircle, AlertTriangle, Activity } from "lucide-react";
 
-import { useUsers } from "@/services/users/query";
+import { useUsers, useRecentActivity } from "@/services/users/query";
 import { RealtimeIndicator } from "@/components/atoms/realtimeIndicator";
 import { PageHeader } from "@/components/atoms/pageHeader";
 import { LoadingState } from "@/components/atoms/loadingState";
@@ -15,6 +15,7 @@ import { StatCard } from "@/components/molecules/statCard";
 
 export default function Home() {
   const { data: users = [], isLoading: loading, error } = useUsers();
+  const { data: recentActivity = [], isLoading: recentActivityLoading } = useRecentActivity();
 
   const stats: IStats = useMemo(() => {
     if (users.length === 0) {
@@ -162,59 +163,52 @@ export default function Home() {
               <p className="text-sm text-zinc-500 mt-2 font-medium">Latest check-ins from users</p>
             </CardHeader>
             <CardContent className="p-6">
-              {loading ? (
+              {recentActivityLoading ? (
                 <LoadingState message="Loading activity..." />
-              ) : users.length > 0 ? (
+              ) : recentActivity.length > 0 ? (
                 <div className="space-y-4">
-                  {users
-                    .filter((u) => u.last_checkin)
-                    .sort(
-                      (a, b) =>
-                        new Date(b.last_checkin!).getTime() - new Date(a.last_checkin!).getTime()
-                    )
-                    .slice(0, 5)
-                    .map((user, idx) => (
-                      <motion.div
-                        key={user.id || idx}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: idx * 0.1 }}
-                        className="flex items-center justify-between p-4 rounded-xl bg-zinc-50/50 hover:bg-zinc-100/50 transition-colors border border-zinc-100"
-                      >
-                        <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                            <Users className="h-5 w-5 text-blue-600" />
-                          </div>
-                          <div>
-                            <p className="font-semibold text-zinc-900 font-mono text-sm">
-                              {formatPhoneNumber(user.number)}
-                            </p>
-                            <p className="text-xs text-zinc-500">
-                              {user.last_checkin &&
-                                new Date(user.last_checkin).toLocaleString("id-ID")}
-                            </p>
-                          </div>
+                  {recentActivity.map((user, idx) => (
+                    <motion.div
+                      key={user.id || idx}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: idx * 0.1 }}
+                      className="flex items-center justify-between p-4 rounded-xl bg-zinc-50/50 hover:bg-zinc-100/50 transition-colors border border-zinc-100"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                          <Users className="h-5 w-5 text-blue-600" />
                         </div>
-                        <div className="flex gap-2">
-                          {user.absen_pagi && (
-                            <Badge
-                              variant="outline"
-                              className="bg-emerald-50 text-emerald-700 border-emerald-300"
-                            >
-                              Morning
-                            </Badge>
-                          )}
-                          {user.absen_sore && (
-                            <Badge
-                              variant="outline"
-                              className="bg-violet-50 text-violet-700 border-violet-300"
-                            >
-                              Evening
-                            </Badge>
-                          )}
+                        <div>
+                          <p className="font-semibold text-zinc-900 font-mono text-sm">
+                            {formatPhoneNumber(user.number)}
+                          </p>
+                          <p className="text-xs text-zinc-500">
+                            {user.last_checkin &&
+                              new Date(user.last_checkin).toLocaleString("id-ID")}
+                          </p>
                         </div>
-                      </motion.div>
-                    ))}
+                      </div>
+                      <div className="flex gap-2">
+                        {user.absen_pagi && (
+                          <Badge
+                            variant="outline"
+                            className="bg-emerald-50 text-emerald-700 border-emerald-300"
+                          >
+                            Morning
+                          </Badge>
+                        )}
+                        {user.absen_sore && (
+                          <Badge
+                            variant="outline"
+                            className="bg-violet-50 text-violet-700 border-violet-300"
+                          >
+                            Evening
+                          </Badge>
+                        )}
+                      </div>
+                    </motion.div>
+                  ))}
                 </div>
               ) : (
                 <div className="text-center py-12 text-zinc-500">

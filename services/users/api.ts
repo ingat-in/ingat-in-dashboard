@@ -78,3 +78,15 @@ export async function resetEveningAttendance(): Promise<void> {
 
   if (error) throw error;
 }
+
+export async function getRecentActivity(): Promise<IUser[]> {
+  const { data, error } = await supabase
+    .from(USER_TABLE_CONFIG.NAME)
+    .select("*")
+    .not("last_checkin", "is", null)
+    .order("last_checkin", { ascending: false })
+    .limit(4);
+
+  if (error) throw error;
+  return (data as IUser[]) || [];
+}

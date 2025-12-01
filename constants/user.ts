@@ -6,6 +6,7 @@
 export const USER_QUERY_KEYS = {
   ROOT: ["users"] as const,
   DETAIL: (id: string) => ["users", id] as const,
+  RECENT_ACTIVITY: ["users", "recent-activity"] as const,
 } as const;
 
 // Cache Configuration

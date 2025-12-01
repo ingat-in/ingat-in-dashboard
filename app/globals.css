@@ -74,3 +74,47 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Mobile Performance Optimizations */
+@media (max-width: 768px) {
+  /* Disable backdrop blur on mobile - very heavy on mobile GPU */
+  .backdrop-blur-xl,
+  .backdrop-blur-2xl,
+  [class*="backdrop-blur"] {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Reduce blur effects significantly */
+  [class*="blur-["] {
+    filter: blur(20px) !important;
+  }
+
+  /* Disable continuous animations */
+  [class*="animate-pulse"] {
+    animation: none !important;
+  }
+
+  /* Simplify shadows */
+  .shadow-2xl,
+  .shadow-xl {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important;
+  }
+
+  /* Disable transform effects */
+  * {
+    will-change: auto !important;
+  }
+}
+
+/* Reduce motion for accessibility and performance */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

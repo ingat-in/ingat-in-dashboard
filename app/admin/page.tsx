@@ -53,7 +53,8 @@ export default function AdminPage() {
       <PageHeader title="Admin Panel" description="Manage system settings and attendance data" />
 
       {/* Reset Attendance Section */}
-      <Card className="shadow-xl border-zinc-200/50 overflow-hidden bg-white/90 backdrop-blur-2xl">
+      <Card className="shadow-xl border-zinc-200/50 overflow-hidden bg-white/90 md:backdrop-blur-2xl">
+        {/* backdrop-blur only on desktop */}
         <CardHeader className="border-b border-zinc-100/80 pb-6 bg-linear-to-br from-zinc-50/50 to-white">
           <CardTitle className="text-2xl font-bold bg-linear-to-br from-zinc-900 to-zinc-700 bg-clip-text text-transparent flex items-center gap-3">
             <Shield className="h-6 w-6 text-zinc-700" />

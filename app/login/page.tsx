@@ -37,25 +37,11 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center px-4 bg-background relative overflow-hidden">
-      {/* Enhanced Background */}
+      {/* Simplified Background - No infinite animations */}
       <div className="absolute inset-0 -z-10 h-full w-full">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-size-[24px_24px]" />
-        <motion.div
-          animate={{
-            scale: [1, 1.1, 1],
-            opacity: [0.3, 0.4, 0.3],
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute left-1/4 top-1/4 -z-10 h-[500px] w-[500px] rounded-full bg-linear-to-br from-amber-300/30 to-orange-300/20 blur-[130px]"
-        />
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.4, 0.3],
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          className="absolute right-1/4 bottom-1/4 -z-10 h-[500px] w-[500px] rounded-full bg-linear-to-tl from-blue-300/25 to-indigo-300/20 blur-[130px]"
-        />
+        <div className="absolute left-1/4 top-1/4 -z-10 h-[500px] w-[500px] rounded-full bg-linear-to-br from-amber-300/30 to-orange-300/20 blur-[60px] md:blur-[130px]" />
+        <div className="absolute right-1/4 bottom-1/4 -z-10 h-[500px] w-[500px] rounded-full bg-linear-to-tl from-blue-300/25 to-indigo-300/20 blur-[60px] md:blur-[130px]" />
       </div>
 
       <motion.div
@@ -64,7 +50,8 @@ export default function LoginPage() {
         transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
         className="relative z-10 w-full max-w-md"
       >
-        <Card className="border-zinc-200/60 shadow-2xl bg-white/95 backdrop-blur-2xl overflow-hidden">
+        <Card className="border-zinc-200/60 shadow-2xl bg-white/95 md:backdrop-blur-2xl overflow-hidden">
+          {/* backdrop-blur only on desktop */}
           <CardHeader className="space-y-4 text-center pb-8 bg-linear-to-br from-zinc-50/50 to-white pt-8">
             <motion.div
               initial={{ scale: 0, rotate: -180 }}

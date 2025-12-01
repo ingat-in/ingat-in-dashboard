@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -32,12 +31,7 @@ export function FormContainer({
   const router = useRouter();
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
-      className="space-y-8"
-    >
+    <div className="space-y-8">
       {/* Header */}
       <div className="flex flex-col gap-4">
         <Button onClick={() => router.push(backUrl)} variant="outline" className="w-fit">
@@ -55,7 +49,8 @@ export function FormContainer({
 
       {/* Empty State or Form Card */}
       {isEmpty ? (
-        <Card className="shadow-xl border-zinc-200/50 overflow-hidden bg-white/90 backdrop-blur-2xl">
+        <Card className="shadow-xl border-zinc-200/50 overflow-hidden bg-white/90 md:backdrop-blur-2xl">
+          {/* backdrop-blur only on desktop */}
           <CardContent className="p-12">
             <div className="flex flex-col items-center justify-center text-center space-y-4">
               <div className="p-4 rounded-full bg-zinc-100">
@@ -71,7 +66,8 @@ export function FormContainer({
           </CardContent>
         </Card>
       ) : (
-        <Card className="shadow-xl border-zinc-200/50 overflow-hidden bg-white/90 backdrop-blur-2xl">
+        <Card className="shadow-xl border-zinc-200/50 overflow-hidden bg-white/90 md:backdrop-blur-2xl">
+          {/* backdrop-blur only on desktop */}
           <CardHeader className="border-b border-zinc-100/80 bg-linear-to-br from-zinc-50/50 to-white">
             <CardTitle className="text-2xl font-bold bg-linear-to-br from-zinc-900 to-zinc-700 bg-clip-text text-transparent flex items-center gap-3">
               <Icon className="h-6 w-6 text-zinc-700" />
@@ -85,6 +81,6 @@ export function FormContainer({
           </CardContent>
         </Card>
       )}
-    </motion.div>
+    </div>
   );
 }

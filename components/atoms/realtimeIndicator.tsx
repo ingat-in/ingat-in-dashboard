@@ -52,7 +52,7 @@ export function RealtimeIndicator() {
   }, [dataUpdatedAt]);
 
   return (
-    <div className="flex items-center gap-2 text-sm text-zinc-500 bg-white/70 px-4 py-2 rounded-xl border border-zinc-200/60 backdrop-blur-sm shadow-sm">
+    <div className="flex items-center gap-2 text-xs md:text-sm text-zinc-500 bg-white/70 px-3 py-1.5 md:px-4 md:py-2 rounded-xl border border-zinc-200/60 backdrop-blur-sm shadow-sm">
       <span className={`relative flex h-2.5 w-2.5`}>
         <span
           className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${

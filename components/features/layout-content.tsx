@@ -45,7 +45,9 @@ export function LayoutContent({ children }: { children: React.ReactNode }) {
 
       <SideBar />
       <main className="flex-1 overflow-x-hidden">
-        <div className="container mx-auto px-4 lg:px-8 py-8 lg:py-12 max-w-7xl">{children}</div>
+        <div className="container mx-auto px-4 lg:px-8 py-6 md:py-8 lg:py-12 max-w-7xl">
+          {children}
+        </div>
       </main>
     </div>
   );

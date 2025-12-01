@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { RefreshCw, Users, CheckCircle, XCircle, Search, Edit, Trash2, Plus } from "lucide-react";
+import { Users, CheckCircle, XCircle, Search, Edit, Trash2, Plus } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -173,14 +173,9 @@ export default function UsersPage() {
                 </TableHeader>
                 <TableBody>
                   {filteredUsers.map((user, idx) => (
-                    <motion.tr
+                    <tr
                       key={user.id || idx}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      whileHover={{
-                        backgroundColor: "rgba(250, 250, 250, 0.9)",
-                      }}
-                      className="border-b border-zinc-100 cursor-pointer transition-all duration-200 group"
+                      className="border-b border-zinc-100 cursor-pointer transition-colors duration-200 group hover:bg-zinc-50/50"
                     >
                       <TableCell className="font-bold text-zinc-800 py-5 pl-6">
                         <div className="flex items-center justify-center w-8 h-8 rounded-full bg-zinc-100 group-hover:bg-blue-100 text-zinc-700 group-hover:text-blue-700 transition-colors text-sm font-semibold">
@@ -325,18 +320,13 @@ export default function UsersPage() {
                           />
                         </div>
                       </TableCell>
-                    </motion.tr>
+                    </tr>
                   ))}
                 </TableBody>
               </Table>
             </div>
           ) : (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className="text-center py-20 text-zinc-500 bg-linear-to-br from-zinc-50/80 to-zinc-100/40"
-            >
+            <div className="text-center py-20 text-zinc-500 bg-linear-to-br from-zinc-50/80 to-zinc-100/40">
               <Users className="mx-auto h-16 w-16 mb-6 text-zinc-300" />
               <h3 className="text-xl font-bold text-zinc-800 mb-2">
                 {searchQuery ? "No users match your search" : "No users found"}
@@ -346,7 +336,7 @@ export default function UsersPage() {
                   ? "Try a different search term"
                   : "Users will appear here once they interact with the bot"}
               </p>
-            </motion.div>
+            </div>
           )}
         </CardContent>
       </Card>

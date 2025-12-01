@@ -1,7 +1,6 @@
 import { LucideIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { motion } from "framer-motion";
 
 interface StatCardProps {
   title: string;
@@ -79,82 +78,53 @@ export function StatCard({
 }: StatCardProps) {
   const colors = gradients[gradient];
 
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring" as const,
-        stiffness: 80,
-        damping: 15,
-        delay,
-      },
-    },
-  };
-
-  const cardHover = {
-    y: -8,
-    transition: { type: "spring" as const, stiffness: 300, damping: 20 },
-  };
-
   return (
-    <motion.div variants={item} whileHover={cardHover} className="h-full">
-      <Card
-        className={`relative overflow-hidden ${colors.card} backdrop-blur-xl shadow-lg hover:shadow-2xl ${colors.hover} transition-all duration-500 group h-full`}
-      >
+    <Card
+      className={`relative overflow-hidden ${colors.card} md:backdrop-blur-xl shadow-lg hover:shadow-2xl hover:-translate-y-2 ${colors.hover} transition-all duration-300 group h-full`}
+    >
+      <div
+        className={`absolute inset-0 bg-linear-to-br ${colors.overlay} via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+      />
+      <div
+        className={`absolute -right-8 -top-8 h-32 w-32 rounded-full ${colors.glow} blur-2xl transition-colors duration-500`}
+      />
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
+        <CardTitle className="text-sm font-semibold text-zinc-600 uppercase tracking-wide">
+          {title}
+        </CardTitle>
         <div
-          className={`absolute inset-0 bg-linear-to-br ${colors.overlay} via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-        />
-        <div
-          className={`absolute -right-8 -top-8 h-32 w-32 rounded-full ${colors.glow} blur-2xl transition-colors duration-500`}
-        />
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 relative z-10">
-          <CardTitle className="text-sm font-semibold text-zinc-600 uppercase tracking-wide">
-            {title}
-          </CardTitle>
-          <motion.div
-            whileHover={{ rotate: 360, scale: 1.1 }}
-            transition={{ duration: 0.6 }}
-            className={`p-3 ${colors.icon} rounded-2xl text-white shadow-lg`}
-          >
-            <Icon className="h-5 w-5" />
-          </motion.div>
-        </CardHeader>
-        <CardContent className="pt-2 relative z-10">
-          <div className="text-5xl font-bold bg-linear-to-br from-zinc-900 to-zinc-700 bg-clip-text text-transparent mb-3">
-            {loading || value === undefined ? (
-              <div className="h-12 w-24 bg-linear-to-r from-zinc-200 to-zinc-300 animate-pulse rounded-lg" />
+          className={`p-3 ${colors.icon} rounded-2xl text-white shadow-lg transition-transform duration-300 hover:scale-110 hover:rotate-12`}
+        >
+          <Icon className="h-5 w-5" />
+        </div>
+      </CardHeader>
+      <CardContent className="pt-2 relative z-10">
+        <div className="text-3xl md:text-5xl font-bold bg-linear-to-br from-zinc-900 to-zinc-700 bg-clip-text text-transparent mb-3">
+          {loading || value === undefined ? (
+            <div className="h-12 w-24 bg-linear-to-r from-zinc-200 to-zinc-300 animate-pulse rounded-lg" />
+          ) : (
+            <span className="inline-block animate-fade-in">{value}</span>
+          )}
+        </div>
+        {progress !== undefined && (
+          <Progress
+            value={progress}
+            className={`h-2 ${colors.progressBg} ${colors.progressBar} rounded-full mb-3`}
+          />
+        )}
+        {footer && (
+          <p className="text-sm text-zinc-500 flex items-center gap-1.5 font-medium">
+            {footer.includes("%") ? (
+              <>
+                <span className={`${colors.text} font-semibold`}>{footer.split(" ")[0]}</span>{" "}
+                {footer.split(" ").slice(1).join(" ")}
+              </>
             ) : (
-              <motion.span
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                {value}
-              </motion.span>
+              footer
             )}
-          </div>
-          {progress !== undefined && (
-            <Progress
-              value={progress}
-              className={`h-2 ${colors.progressBg} ${colors.progressBar} rounded-full mb-3`}
-            />
-          )}
-          {footer && (
-            <p className="text-sm text-zinc-500 flex items-center gap-1.5 font-medium">
-              {footer.includes("%") ? (
-                <>
-                  <span className={`${colors.text} font-semibold`}>{footer.split(" ")[0]}</span>{" "}
-                  {footer.split(" ").slice(1).join(" ")}
-                </>
-              ) : (
-                footer
-              )}
-            </p>
-          )}
-        </CardContent>
-      </Card>
-    </motion.div>
+          </p>
+        )}
+      </CardContent>
+    </Card>
   );
 }

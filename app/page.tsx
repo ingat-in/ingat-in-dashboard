@@ -84,7 +84,12 @@ export default function Home() {
   };
 
   return (
-    <motion.div variants={pageTransition} initial="hidden" animate="show" className="space-y-8">
+    <motion.div
+      variants={pageTransition}
+      initial="hidden"
+      animate="show"
+      className="space-y-6 md:space-y-8"
+    >
       {/* Header */}
       <PageHeader
         title="Dashboard Overview"
@@ -110,9 +115,14 @@ export default function Home() {
         </motion.div>
       )}
 
-      <motion.div variants={container} initial="hidden" animate="show" className="space-y-8">
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="show"
+        className="space-y-6 md:space-y-8"
+      >
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           <StatCard
             title="Total Users"
             value={stats.totalUsers}

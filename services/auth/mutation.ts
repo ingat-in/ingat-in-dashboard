@@ -51,6 +51,7 @@ export function useSignIn() {
  */
 export function useSignOut() {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   return useMutation({
     mutationFn: async () => {
@@ -69,10 +70,11 @@ export function useSignOut() {
       // Clear all browser storage
       clearAllStorage();
 
+      // Show success toast
       toast.success("Logged out successfully.");
 
-      // Force hard reload to ensure clean state
-      window.location.href = AUTH_ROUTES.LOGIN;
+      // Navigate to login page
+      router.push(AUTH_ROUTES.LOGIN);
     },
   });
 }

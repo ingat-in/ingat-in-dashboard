@@ -9,6 +9,7 @@ import { useResetMorningAttendance, useResetEveningAttendance } from "@/services
 import { PageHeader } from "@/components/atoms/pageHeader";
 import { WarningNotice } from "@/components/atoms/warningNotice";
 import { ResetAttendanceCard } from "@/components/molecules/resetAttendanceCard";
+import { LeaveApprovalSection } from "@/components/organisms/leaveApprovalSection";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -52,6 +53,9 @@ export default function AdminPage() {
       {/* Header */}
       <PageHeader title="Admin Panel" description="Manage system settings and attendance data" />
 
+      {/* Leave Approval Section */}
+      <LeaveApprovalSection delay={0.1} />
+
       {/* Reset Attendance Section */}
       <Card className="shadow-xl border-zinc-200/50 overflow-hidden bg-white/90 md:backdrop-blur-2xl">
         {/* backdrop-blur only on desktop */}
@@ -77,7 +81,7 @@ export default function AdminPage() {
               onConfirm={handleResetMorning}
               isPending={resetMorningMutation.isPending}
               colorScheme="emerald"
-              delay={0.1}
+              delay={0.2}
             />
 
             <ResetAttendanceCard
@@ -90,7 +94,7 @@ export default function AdminPage() {
               onConfirm={handleResetEvening}
               isPending={resetEveningMutation.isPending}
               colorScheme="violet"
-              delay={0.2}
+              delay={0.3}
             />
           </div>
         </CardContent>
@@ -99,7 +103,7 @@ export default function AdminPage() {
       <WarningNotice
         title="Important Notice"
         message="Reset operations affect all users in the system. Make sure to use these features responsibly, as they cannot be undone. Consider notifying users before performing a reset."
-        delay={0.3}
+        delay={0.4}
       />
     </motion.div>
   );

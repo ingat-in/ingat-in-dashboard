@@ -27,7 +27,7 @@ export function CheckInCard({ title, description, isActive, onClick, activeColor
   return (
     <div
       onClick={onClick}
-      className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-200 ${
+      className={`p-6 rounded-xl border-2 cursor-target transition-all duration-200 ${
         isActive
           ? `${colors[activeColor].border} ${colors[activeColor].background} ${colors[activeColor].shadow}`
           : "border-zinc-200 bg-zinc-50 hover:border-zinc-300 hover:bg-zinc-100"

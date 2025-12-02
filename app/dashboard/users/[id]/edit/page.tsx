@@ -86,7 +86,7 @@ export default function EditUserPage() {
       title="Edit User"
       subtitle="Update user information and check-in status"
       icon={UserCog}
-      backUrl="/users"
+      backUrl="/dashboard/users"
       onSubmit={handleSubmit}
       isEmpty={!user}
       emptyMessage="User not found"

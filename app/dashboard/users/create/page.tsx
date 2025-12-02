@@ -67,7 +67,7 @@ export default function CreateUserPage() {
       title="Create New User"
       subtitle="Add a new user to the system"
       icon={UserPlus}
-      backUrl="/users"
+      backUrl="/dashboard/users"
       onSubmit={handleSubmit}
     >
       <FormInput

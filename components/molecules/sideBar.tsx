@@ -123,7 +123,7 @@ export function SideBar() {
                     href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={`
-                      flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 group relative
+                      flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-200 group relative cursor-target
                       ${
                         active
                           ? "bg-linear-to-r from-blue-50 to-blue-100/50 text-blue-700 shadow-md shadow-blue-100"

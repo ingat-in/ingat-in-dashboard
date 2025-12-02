@@ -44,7 +44,7 @@ export function FormInput({
           placeholder={placeholder}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={`${icon ? "pl-10" : ""} ${className || ""} border-zinc-300 focus:border-blue-500`}
+          className={`${icon ? "pl-10" : ""} ${className || ""} border-zinc-300 focus:border-blue-500 cursor-target`}
           required={required}
         />
       </div>

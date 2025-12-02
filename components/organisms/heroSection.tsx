@@ -5,6 +5,8 @@ import { MessageCircle, Shield } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { generateBotWhatsAppLink } from "@/utils/whatsapp";
+import NextImage from "next/image";
+import TextType from "../TextType";
 
 interface HeroSectionProps {
   container: Variants;
@@ -17,28 +19,38 @@ export function HeroSection({ container, item }: HeroSectionProps) {
       variants={container}
       initial="hidden"
       animate="show"
-      className="relative text-center space-y-8 px-4 py-16 md:py-24"
+      className="relative text-center space-y-8 px-4 py-12 md:py-16"
       role="region"
       aria-labelledby="hero-heading"
     >
       <motion.div variants={item} className="space-y-6 max-w-4xl mx-auto">
-        <div className="inline-flex items-center px-4 py-2 rounded-full bg-linear-to-r from-emerald-500/10 to-blue-500/10 border border-emerald-500/20 backdrop-blur-sm">
-          <span className="text-sm font-medium text-emerald-700">
-            ✨ Automated Attendance System
-          </span>
-        </div>
+        <div className="flex flex-col items-center gap-2">
+          <div className="relative h-36 w-36 rounded-full overflow-hidden shadow-lg">
+            <NextImage
+              src="/logo.webp"
+              alt="Ingat-in Logo"
+              fill
+              sizes="128px"
+              className="object-cover"
+              priority
+            />
+          </div>
 
-        <h1
-          id="hero-heading"
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold bg-linear-to-br from-zinc-900 via-zinc-800 to-zinc-700 bg-clip-text text-transparent tracking-tight leading-tight pb-2"
-        >
-          Ingat-In
-        </h1>
+          <div className="w-full">
+            <TextType
+              text={["Ingat In", "WhatsApp Bot", "Attendance Reminder"]}
+              typingSpeed={50}
+              pauseDuration={1500}
+              showCursor={true}
+              cursorCharacter="|"
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold py-2"
+            />
+          </div>
+        </div>
 
         <p className="text-xl sm:text-2xl md:text-3xl text-zinc-700 max-w-3xl mx-auto font-semibold leading-relaxed">
           WhatsApp Bot Attendance Reminder System
         </p>
-
         <p className="text-base sm:text-lg md:text-xl text-zinc-600 max-w-2xl mx-auto leading-relaxed">
           Automated attendance tracking through WhatsApp with real-time monitoring dashboard. Never
           miss a check-in again with intelligent reminders.

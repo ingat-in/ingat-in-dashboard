@@ -7,7 +7,12 @@ import TargetCursor from "@/components/TargetCursor";
 export const metadata: Metadata = {
   title: "Ingat-In Dashboard",
   description: "Real-time WhatsApp Bot Attendance Monitoring Dashboard",
-  viewport: "width=device-width, initial-scale=0.9, maximum-scale=1.0",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 0.9,
+  maximumScale: 1,
 };
 
 export default function RootLayout({
@@ -16,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" suppressHydrationWarning>
+    <html lang="id" suppressHydrationWarning data-scroll-behavior="smooth">
       <body className="antialiased">
         <TargetCursor spinDuration={2} hideDefaultCursor={true} parallaxOn={true} />
         <Providers>{children}</Providers>

@@ -289,6 +289,7 @@ export default function UsersPage() {
                               <Button
                                 size="sm"
                                 variant="outline"
+                                onClick={() => handleDeleteClick(user)}
                                 className="hover:bg-red-50 hover:text-red-700 hover:border-red-300 transition-all"
                               >
                                 <Trash2 className="h-4 w-4" />
@@ -310,10 +311,7 @@ export default function UsersPage() {
                               </>
                             }
                             confirmLabel="Delete"
-                            onConfirm={() => {
-                              handleDeleteClick(user);
-                              handleDeleteConfirm();
-                            }}
+                            onConfirm={handleDeleteConfirm}
                             isLoading={deleteUserMutation.isPending}
                             loadingLabel="Deleting..."
                             variant="danger"

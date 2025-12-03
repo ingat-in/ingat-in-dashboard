@@ -1,5 +1,7 @@
 "use client";
 
+export const runtime = 'edge';
+
 import { motion, Variants } from "framer-motion";
 import { Activity, MessageCircle, Shield } from "lucide-react";
 import { HeroSection } from "@/components/organisms/heroSection";

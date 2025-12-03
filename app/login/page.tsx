@@ -1,5 +1,7 @@
 "use client";
 
+export const runtime = 'edge';
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useSignIn } from "@/services/auth";

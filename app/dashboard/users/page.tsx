@@ -107,7 +107,7 @@ export default function UsersPage() {
 
       {/* Users Table */}
       <Card className="shadow-xl border-zinc-200/50 overflow-hidden bg-white/90 backdrop-blur-2xl">
-        <CardHeader className="flex flex-row items-center justify-between border-b border-zinc-100/80 pb-6 bg-linear-to-br from-zinc-50/50 to-white">
+        <CardHeader className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between border-b border-zinc-100/80 pb-6 bg-linear-to-br from-zinc-50/50 to-white">
           <div>
             <CardTitle className="text-2xl font-bold bg-linear-to-br from-zinc-900 to-zinc-700 bg-clip-text text-transparent flex items-center gap-3">
               <Users className="h-6 w-6 text-zinc-700" />
@@ -117,20 +117,20 @@ export default function UsersPage() {
               {filteredUsers.length} user{filteredUsers.length !== 1 ? "s" : ""} found
             </p>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="relative cursor-target">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
+            <div className="relative cursor-target flex-1 sm:flex-initial">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
               <Input
                 type="text"
                 placeholder="Search by number..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 w-64 border-zinc-300 focus:border-blue-500"
+                className="pl-10 w-full sm:w-64 border-zinc-300 focus:border-blue-500"
               />
             </div>
             <Button
               onClick={() => router.push("/dashboard/users/create")}
-              className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg"
+              className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg w-full sm:w-auto"
             >
               <Plus className="h-4 w-4 mr-2" />
               Add User

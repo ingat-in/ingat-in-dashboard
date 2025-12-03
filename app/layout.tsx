@@ -7,6 +7,7 @@ import TargetCursor from "@/components/TargetCursor";
 export const metadata: Metadata = {
   title: "Ingat-In Dashboard",
   description: "Real-time WhatsApp Bot Attendance Monitoring Dashboard",
+  viewport: "width=device-width, initial-scale=0.9, maximum-scale=1.0",
 };
 
 export default function RootLayout({

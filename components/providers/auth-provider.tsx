@@ -24,8 +24,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Check initial session
-    const checkSession = async () => {
+    const initializeAuth = async () => {
+      if (typeof window !== "undefined") {
+        try {
+          const storedSessionStr = localStorage.getItem("ingatin-auth-token");
+          if (storedSessionStr) {
+            const storedSession = JSON.parse(storedSessionStr);
+            if (storedSession?.user) {
+              setUser(storedSession.user);
+              setLoading(false); // Unblock UI immediately
+            }
+          }
+        } catch (e) {
+          logger.error("Error parsing stored session:", e);
+        }
+      }
+
+      // 2. Authoritative check with Supabase
       try {
         const {
           data: { session },
@@ -35,7 +50,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setInitialCheckDone(true);
         setLoading(false);
 
-        // Redirect logic after checking session
+        // Redirect logic
         const isProtectedRoute = pathname.startsWith("/dashboard");
 
         if (!session && isProtectedRoute) {
@@ -50,16 +65,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     };
 
-    checkSession();
+    initializeAuth();
 
     // Listen for auth changes
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event: AuthChangeEvent, session: Session | null) => {
       setUser(session?.user ?? null);
+      setLoading(false);
 
-      // Only redirect after initial check is done
-      if (initialCheckDone) {
+      if (initialCheckDone || _event === "SIGNED_IN" || _event === "SIGNED_OUT") {
         const isProtectedRoute = pathname.startsWith("/dashboard");
 
         if (!session && isProtectedRoute) {

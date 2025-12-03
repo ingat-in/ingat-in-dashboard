@@ -22,6 +22,7 @@ export function getSupabaseClient(): SupabaseClient {
       persistSession: true,
       autoRefreshToken: true,
       detectSessionInUrl: true,
+      storageKey: "ingatin-auth-token",
     },
     global: {
       headers: {

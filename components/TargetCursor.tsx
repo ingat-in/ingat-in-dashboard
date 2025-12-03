@@ -41,29 +41,33 @@ const TargetCursor: React.FC<TargetCursorProps> = ({
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // Initial check - detect if device has a fine pointer (mouse)
+    // Check if device has touch capability or is in mobile viewport
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    const isMobileViewport = window.innerWidth < 768;
     const hasFinePointer = matchMedia("(pointer: fine)").matches;
-    setHasMouseCursor(hasFinePointer);
+    
+    // Hide cursor if touch device OR mobile viewport OR no fine pointer
+    const shouldShowCursor = !isTouchDevice && !isMobileViewport && hasFinePointer;
+    setHasMouseCursor(shouldShowCursor);
 
-    // Only add listeners if we detect a fine pointer
-    if (!hasFinePointer) return;
+    if (!shouldShowCursor) return;
 
-    const handleMouseMove = () => {
-      setHasMouseCursor(true);
-    };
-
-    const handleTouchStart = () => {
-      // If touch is detected and no fine pointer, hide cursor
-      if (!matchMedia("(pointer: fine)").matches) {
+    const handleResize = () => {
+      const isMobile = window.innerWidth < 768;
+      if (isMobile) {
         setHasMouseCursor(false);
       }
     };
 
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    window.addEventListener("touchstart", handleTouchStart, { passive: true });
+    const handleTouchStart = () => {
+      setHasMouseCursor(false);
+    };
+
+    window.addEventListener("resize", handleResize, { passive: true });
+    window.addEventListener("touchstart", handleTouchStart, { passive: true, once: true });
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("resize", handleResize);
       window.removeEventListener("touchstart", handleTouchStart);
     };
   }, []);

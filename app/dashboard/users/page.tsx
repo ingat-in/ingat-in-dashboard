@@ -1,7 +1,5 @@
 "use client";
 
-export const runtime = 'edge';
-
 import { motion } from "framer-motion";
 import { Users, CheckCircle, XCircle, Search, Edit, Trash2, Plus } from "lucide-react";
 import { useState } from "react";

@@ -1,7 +1,5 @@
 "use client";
 
-export const runtime = 'edge';
-
 import { useMemo } from "react";
 import { motion, Variants } from "framer-motion";
 import { Users, CheckCircle, AlertTriangle, Activity } from "lucide-react";

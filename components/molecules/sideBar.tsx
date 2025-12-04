@@ -50,7 +50,7 @@ export function SideBar() {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="lg:hidden fixed top-4 right-4 z-50 p-2 bg-white/90 backdrop-blur-sm rounded-xl border border-zinc-200 shadow-lg"
+        className="lg:hidden fixed top-4 right-4 z-50 p-2 bg-white/90 backdrop-blur-sm rounded-xl border border-zinc-200 shadow-lg cursor-target"
       >
         {isMobileMenuOpen ? (
           <X className="h-6 w-6 text-zinc-700" />
